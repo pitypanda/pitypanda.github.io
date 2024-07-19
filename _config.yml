@@ -1,6 +1,6 @@
-title: "Blog Title"
-author: "Blog Author"
-description: "Made with <b style=\"color: #f45;\">&lt;3</b>"
+title: "Jiacheng Sun"
+author: "Tommy Sun"
+description: "Need to think about something funny"
 permalink: /:title/
 lang: "en"
 excerpt_separator: "\n\n\n"
