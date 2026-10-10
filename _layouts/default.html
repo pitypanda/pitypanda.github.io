@@ -1,44 +1,46 @@
-<!DOCTYPE html>
-<html lang="{{ page.lang | default: site.lang | default: "en" }}">
-<title>{% if page.title %}{{ page.title | escape }} | {% endif %}{{ site.title | escape }}</title>
-<meta charset="{{ site.encoding }}">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="author" content="{{ page.author | default: site.author | escape }}">
-<meta name="generator" content="Jekyll v{{ jekyll.version }}">
-<link rel="canonical" href="{{ page.url | absolute_url }}">
-{% if site.show_frame %}
-<link rel="stylesheet" href="{{ "/assets/css/frame.css" | relative_url }}">
-{% else %}
-<link rel="stylesheet" href="{{ "/assets/css/index.css" | relative_url }}">
-{% endif %}
-{% if site.plugins contains "jekyll-feed" %}<link rel="alternate" href="{{ site.feed.path | default: "/feed.xml" | relative_url }}" type="application/atom+xml" title="{{ site.title }}">{% endif %}
-{% if page.mathjax or site.mathjax %}
-<link rel="stylesheet" href="{{ "/assets/katex/katex.min.css" | relative_url }}">
-<script defer src="{{ "/assets/katex/katex.min.js" | relative_url }}"></script>
-<script defer src="{{ "/assets/katex/contrib/auto-render.min.js" | relative_url }}" onload="renderMathInElement(document.body)"></script>
-{% endif %}
-{% if site.comments.disqus_shortname and page.layout == "post" %}<script src="//{{ site.comments.disqus_shortname }}.disqus.com/embed.js" async></script>{% endif %}
-{% if site.comments.isso_domain and page.layout == "post" %}<script data-isso="http://{{ site.comments.isso_domain }}" src="//{{ site.comments.isso_domain }}/js/embed.min.js"></script>{% endif %}
-{% if site.show_sidebar or site.sidebar %}{% include sidebar.html %}{% endif %}
-
-{% if site.navigation %}
-  {% assign pages = site.navigation %}
-{% else %}
-  {% assign pages = site.pages | where_exp: "item", "item.title and item.sitemap != false" | sort: "order" %}
-{% endif %}
-
-<header>
-  <a href="{{ "/" | relative_url }}" class="title">{{ site.title | escape }}</a>
-  {% include menu.html menu=pages %}
-</header>
-
-{{ content }}
-
-{% if site.external %}
-<footer>
-  <div>{{ site.description | default: site.title }}</div>
-  {% include menu.html menu=site.external %}
-</footer>
-{% endif %}
-
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title | escape }} · {{ site.name | escape }}</title>
+  <meta name="description" content="{{ page.description | default: site.description | escape }}">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
+  <script>
+    window.MathJax = {tex: {inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true}};
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="site-shell">
+    <aside class="sidebar">
+      <a class="wordmark" href="{{ '/' | relative_url }}" aria-label="{{ site.name | escape }} home">JS<span>.</span></a>
+      <a class="name" href="{{ '/' | relative_url }}">{{ site.name | escape }}</a>
+      <p class="nickname">{{ site.preferred_name | escape }}</p>
+      <p class="affiliation">{{ site.role | escape }}<br>{{ site.affiliation | escape }}</p>
+      <nav aria-label="Main navigation">
+        <a href="{{ '/' | relative_url }}" {% if page.section == 'home' %}aria-current="page"{% endif %}>Home <span>01</span></a>
+        <a href="{{ '/research/' | relative_url }}" {% if page.section == 'research' %}aria-current="page"{% endif %}>Research <span>02</span></a>
+        <a href="{{ '/teaching/' | relative_url }}" {% if page.section == 'teaching' %}aria-current="page"{% endif %}>Teaching <span>03</span></a>
+        <a href="{{ '/cv/' | relative_url }}" {% if page.section == 'cv' %}aria-current="page"{% endif %}>CV <span>04</span></a>
+      </nav>
+      <div class="sidebar-links">
+        {% if site.email != '' %}<a href="mailto:{{ site.email | escape }}">Email ↗</a>{% endif %}
+        <a href="https://github.com/{{ site.github_username | escape }}">GitHub ↗</a>
+      </div>
+      <p class="sidebar-foot">Mathematics<br>Buffalo, New York</p>
+    </aside>
+    <main id="main" class="main">
+      <header class="page-header">
+        <p class="eyebrow">{{ page.eyebrow | default: 'Mathematics' | escape }}</p>
+        <h1>{{ page.heading | default: page.title | escape }}</h1>
+        {% if page.subtitle %}<p class="subtitle">{{ page.subtitle | escape }}</p>{% endif %}
+      </header>
+      <article class="content">{{ content }}</article>
+      <footer class="footer">{{ site.name | escape }} <span>·</span> {{ site.affiliation | escape }}</footer>
+    </main>
+  </div>
+</body>
 </html>
